@@ -20,7 +20,7 @@
             font-family: 'Playfair Display', serif;
         }
 
-        /* Floating Hearts Animation */
+        /* Floating Hearts Background */
         .hearts-container {
             position: fixed;
             top: 0;
@@ -65,20 +65,10 @@
         }
 
         @keyframes floatup {
-            0% {
-                transform: rotate(-45deg) translateY(0) scale(0.5);
-                opacity: 0;
-            }
-            20% {
-                opacity: 0.6;
-            }
-            80% {
-                opacity: 0.4;
-            }
-            100% {
-                transform: rotate(-45deg) translateY(-1000px) scale(1.2);
-                opacity: 0;
-            }
+            0% { transform: rotate(-45deg) translateY(0) scale(0.5); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.4; }
+            100% { transform: rotate(-45deg) translateY(-1000px) scale(1.2); opacity: 0; }
         }
 
         /* Glassmorphism Elements */
@@ -159,25 +149,56 @@
             transform: scale(1.1);
         }
 
-        /* Fade transitions */
-        .fade-enter { opacity: 0; transform: scale(0.95); }
-        .fade-enter-active { opacity: 1; transform: scale(1); transition: opacity 800ms, transform 800ms; }
-        .fade-exit { opacity: 1; transform: scale(1); }
-        .fade-exit-active { opacity: 0; transform: scale(0.95); transition: opacity 800ms, transform 800ms; }
+        /* Screen Transitions */
+        .screen-section {
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+        .fade-out {
+            opacity: 0 !important;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+        
+        /* Glowing Heart Pulse */
+        @keyframes glowing-pulse {
+            0% { filter: drop-shadow(0 0 20px rgba(255, 51, 102, 0.7)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 182, 193, 1)); transform: scale(1.05); }
+            100% { filter: drop-shadow(0 0 20px rgba(255, 51, 102, 0.7)); transform: scale(1); }
+        }
+        .glow-heart-active {
+            animation: glowing-pulse 2s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="relative flex flex-col items-center justify-center">
 
-    <!-- Floating Hearts Background -->
+    <div style="position: absolute; width: 0; height: 0; overflow: hidden; z-index: -1;">
+        <iframe id="youtube-audio" width="10" height="10" 
+                src="https://www.youtube.com/embed/XuiEyRqWEdo?enablejsapi=1&autoplay=1&loop=1&playlist=XuiEyRqWEdo" 
+                frameborder="0" allow="autoplay">
+        </iframe>
+    </div>
+
     <div class="hearts-container" id="hearts-container"></div>
 
-    <!-- Main Content Container -->
-    <div class="relative z-10 w-full max-w-5xl px-4 py-12 md:py-16 mx-auto text-center flex flex-col items-center justify-center min-h-screen">
+    <div class="relative z-10 w-full max-w-5xl px-4 py-12 md:py-16 mx-auto text-center flex flex-col items-center justify-center min-h-screen overflow-hidden">
         
         <!-- ========================================== -->
-        <!-- 1. WELCOME SCREEN                          -->
+        <!-- 0. DOT TO DOT START SCREEN                 -->
         <!-- ========================================== -->
-        <div id="welcome-screen" class="transition-all duration-1000 ease-in-out flex flex-col items-center w-full">
+        <div id="dot-section" class="screen-section flex flex-col items-center justify-center w-full min-h-[80vh]">
+            <h2 id="dot-title" class="text-pink-300 tracking-[0.3em] uppercase text-sm md:text-lg font-light mb-8 text-center px-4 transition-all duration-500">
+                Connect the dots...
+            </h2>
+            
+            <div class="relative flex justify-center items-center w-full px-4">
+                <div class="absolute inset-0 bg-pink-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+                <!-- INCREASED CANVAS SIZE (600x600) and increased max width -->
+                <canvas id="dot-canvas" width="600" height="600" class="relative z-10 cursor-pointer touch-manipulation transition-all duration-500 w-full max-w-[500px] aspect-square"></canvas>
+            </div>
+        </div>
+
+        <div id="welcome-screen" class="screen-section fade-out hidden flex flex-col items-center w-full">
             <h2 class="text-pink-300 tracking-[0.3em] uppercase text-xs md:text-sm font-semibold mb-4">June 14th — The day you said yes</h2>
             <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-pink-200 via-white to-pink-200 serif" style="line-height: 1.2;">
                 Happy Anniversary,<br> <span class="italic text-pink-400">Richu</span>
@@ -187,7 +208,6 @@
             
             <div class="glass-box p-6 md:p-12 rounded-3xl max-w-4xl w-full mb-10 text-left md:text-center">
                 
-                <!-- The Heartfelt Message -->
                 <div class="space-y-6 text-[16px] md:text-lg text-pink-100/90 font-light leading-relaxed mb-10">
                     <p>
                         My dearest Richu,<br><br>
@@ -201,7 +221,6 @@
                     </p>
                 </div>
                 
-                <!-- Bible Verses -->
                 <div class="verse-box p-6 md:p-8 rounded-xl my-10 md:mx-8">
                     <i data-lucide="quote" class="w-8 h-8 mx-auto text-pink-400/50 mb-4"></i>
                     <p class="italic text-pink-200/90 serif text-lg md:text-xl mb-4">
@@ -226,28 +245,19 @@
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- 2. SLIDESHOW SECTION                       -->
-        <!-- ========================================== -->
-        <div id="slideshow-section" class="w-full hidden opacity-0 transition-opacity duration-1000 ease-in-out flex flex-col items-center">
+        <div id="slideshow-section" class="screen-section fade-out hidden flex flex-col items-center w-full">
             
             <div class="w-full max-w-4xl flex flex-col relative group mt-4">
-                
-                <!-- Images Container -->
                 <div class="photo-frame w-full flex items-center justify-center overflow-hidden min-h-[40vh] md:min-h-[55vh]">
                     <div id="image-container" class="w-full flex justify-center items-center relative">
-                        <!-- Images will be injected here via JS -->
-                    </div>
+                        </div>
                 </div>
 
-                <!-- Caption Container -->
                 <div class="caption-box w-full p-6 md:p-8 text-center min-h-[120px] flex items-center justify-center">
                     <p id="caption-text" class="text-lg md:text-xl text-pink-100 serif italic transition-all duration-500 leading-relaxed">
-                        <!-- Caption injects here -->
-                    </p>
+                        </p>
                 </div>
 
-                <!-- Desktop Navigation Buttons -->
                 <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 slide-nav-btn p-3 rounded-full text-white focus:outline-none hidden md:block opacity-0 group-hover:opacity-100">
                     <i data-lucide="chevron-left" class="w-8 h-8"></i>
                 </button>
@@ -256,7 +266,6 @@
                 </button>
             </div>
 
-            <!-- Slideshow Controls & Progress -->
             <div class="mt-8 flex flex-col items-center w-full max-w-2xl">
                 <div class="flex items-center space-x-8 mb-4">
                     <button onclick="prevSlide()" class="md:hidden slide-nav-btn p-4 rounded-full text-white focus:outline-none">
@@ -273,28 +282,18 @@
                 </div>
 
                 <p id="slide-counter" class="text-sm text-pink-200/60 font-medium tracking-widest uppercase mb-4">Memory 1</p>
-                
-                <!-- Dots indicator -->
                 <div id="dots-container" class="flex flex-wrap justify-center gap-2 mt-2 w-full px-4"></div>
             </div>
 
-            <!-- Transition to Outro Button -->
             <div class="mt-12 flex flex-col items-center gap-4 mb-10 w-full">
                 <button onclick="goToOutro()" class="cursor-pointer inline-flex items-center justify-center px-8 py-4 rounded-full outro-btn font-bold shadow-[0_0_20px_rgba(212,175,55,0.3)] text-lg w-full max-w-xs md:max-w-md">
                     <i data-lucide="mail-open" class="w-5 h-5 mr-3"></i>
                     Read My Final Promise 💌
                 </button>
-                
-                <button onclick="goBackToStart()" class="text-sm text-pink-400/60 hover:text-pink-300 transition-colors flex items-center mt-2">
-                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Go back to the beginning
-                </button>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- 3. OUTRO SCREEN (THE FINAL PROMISE)        -->
-        <!-- ========================================== -->
-        <div id="outro-section" class="w-full hidden opacity-0 transition-opacity duration-1000 ease-in-out flex flex-col items-center">
+        <div id="outro-section" class="screen-section fade-out hidden flex flex-col items-center w-full">
             
             <i data-lucide="gem" class="w-16 h-16 text-yellow-400/80 mb-6 drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]"></i>
             
@@ -303,8 +302,6 @@
             </h2>
 
             <div class="glass-box p-6 md:p-12 rounded-3xl max-w-4xl w-full text-left md:text-center relative overflow-hidden">
-                
-                <!-- Subtle background decoration -->
                 <div class="absolute top-0 right-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
                     <i data-lucide="heart" class="w-64 h-64 fill-white"></i>
                 </div>
@@ -331,12 +328,6 @@
                         Happy Anniversary, my soon-to-be wife. I love you endlessly.
                     </p>
                 </div>
-                
-                <div class="mt-12 text-center">
-                    <button onclick="restartFromOutro()" class="text-sm text-pink-400/60 hover:text-pink-300 transition-colors inline-flex items-center">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4 mr-2"></i> Relive our memories again
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -347,84 +338,229 @@
         lucide.createIcons();
 
         // =====================================================================
-        // 👇 ADD ALL YOUR PHOTOS AND CAPTIONS DOWN HERE 👇
+        // FIXED IMAGES: Hardcoded absolute GitHub URL so they load 100% of the time
         // =====================================================================
+        const baseURL = "https://photographicode.github.io/Richu-proposal/";
         
         const memories = [
-            { 
-                image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800', // <-- Change to your file name, e.g., '1.jpg'
-                caption: 'June 14th — The most beautiful day of my life. The day you became mine.' 
-            },
-            { 
-                image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=800', // <-- Change to your file name, e.g., '2.jpg'
-                caption: 'I know we fight sometimes, but I will never stop fighting for us.' 
-            },
-            { 
-                image: 'https://images.unsplash.com/photo-1494774157365-9e04c6720e47?q=80&w=800', // <-- Change to your file name, e.g., '3.jpg'
-                caption: 'We will work on everything together. Hand in hand.' 
-            },
-            { 
-                image: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=800', // <-- Change to your file name, e.g., '4.jpg'
-                caption: 'Your smile is the only thing I need to make my day perfect.' 
-            },
-            { 
-                image: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800', // <-- Change to your file name, e.g., '5.jpg'
-                caption: 'Through all the ups and downs, you are my perfect bond of union.' 
-            },
-            { 
-                image: 'https://images.unsplash.com/photo-1501901609772-df0848060b33?q=80&w=800', // <-- Change to your file name, e.g., '6.jpg'
-                caption: 'Every memory with you is a treasure I hold close to my heart.' 
-            },
-            { 
-                image: 'https://images.unsplash.com/photo-1474552226712-ac0f0961a954?q=80&w=800', // <-- Change to your file name, e.g., '7.jpg'
-                caption: 'I promise to always listen, to understand, and to grow with you.' 
-            },
-            { 
-                image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=800', // <-- Change to your file name, e.g., '8.jpg'
-                caption: 'No matter the distance or the problem, you are my home.' 
-            },
-            { 
-                image: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800', // <-- Change to your file name, e.g., '9.jpg'
-                caption: 'I cannot wait for the day I finally get to marry you.' 
-            },
-            { 
-                image: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?q=80&w=800', // <-- Change to your file name, e.g., '10.jpg'
-                caption: 'Happy Anniversary, my future wife. I love you endlessly!' 
-            }
-            // Copy and paste more below! Example:
-            // { image: '11.jpg', caption: 'My 11th caption!' },
+            { image: baseURL + '1.jpg', caption: 'June 14th — The most beautiful day of my life. The day you became mine.' },
+            { image: baseURL + '2.jpg', caption: 'I know we fight sometimes, but I will never stop fighting for us.' },
+            { image: baseURL + '3.jpg', caption: 'We will work on everything together. Hand in hand.' },
+            { image: baseURL + '4.jpg', caption: 'Your smile is the only thing I need to make my day perfect.' },
+            { image: baseURL + '5.jpg', caption: 'Through all the ups and downs, you are my perfect bond of union.' },
+            { image: baseURL + '6.jpg', caption: 'Every memory with you is a treasure I hold close to my heart.' },
+            { image: baseURL + '7.jpg', caption: 'I promise to always listen, to understand, and to grow with you.' },
+            { image: baseURL + '8.jpg', caption: 'Happy Anniversary, my future wife. I love you endlessly!' }
         ];
-        
-        // =====================================================================
-        // 👆 END OF YOUR PHOTOS 👆
-        // =====================================================================
 
         // Generate Floating Hearts
         function createHearts() {
             const container = document.getElementById('hearts-container');
-            const heartCount = 25;
-
-            for (let i = 0; i < heartCount; i++) {
+            for (let i = 0; i < 30; i++) {
                 const heart = document.createElement('div');
                 heart.classList.add('heart');
-                
                 const leftPos = Math.random() * 100;
                 const animDuration = 8 + Math.random() * 12;
                 const animDelay = Math.random() * 10;
                 const scale = 0.4 + Math.random() * 0.6;
-
                 heart.style.left = `${leftPos}%`;
                 heart.style.animationDuration = `${animDuration}s`;
                 heart.style.animationDelay = `${animDelay}s`;
                 heart.style.transform = `scale(${scale}) rotate(-45deg)`;
-
                 container.appendChild(heart);
             }
         }
         createHearts();
 
-        // Slideshow & Navigation Logic
-        let currentIndex = 0;
+        // =====================================================================
+        // --- DOT TO DOT GAME LOGIC (BIGGER HEART, 20 DOTS, CLICK BASED) ---
+        // =====================================================================
+        const dotSection = document.getElementById('dot-section');
+        const dotCanvas = document.getElementById('dot-canvas');
+        const dotCtx = dotCanvas.getContext('2d');
+        const dotTitle = document.getElementById('dot-title');
+
+        // FIXED: Much larger 600px internal resolution
+        const dotSize = 600; 
+
+        // UPDATED: 20 smooth points for a perfect, detailed heart shape
+        const heartPath = [
+            {x: 50, y: 25, tx: 0, ty: -20},
+            {x: 60, y: 15, tx: 5, ty: -20},
+            {x: 72, y: 10, tx: 15, ty: -15},
+            {x: 85, y: 14, tx: 20, ty: -5},
+            {x: 94, y: 25, tx: 20, ty: 5},
+            {x: 95, y: 38, tx: 20, ty: 10},
+            {x: 90, y: 52, tx: 20, ty: 15},
+            {x: 81, y: 65, tx: 15, ty: 15},
+            {x: 71, y: 77, tx: 15, ty: 20},
+            {x: 60, y: 87, tx: 10, ty: 20},
+            {x: 50, y: 95, tx: 0, ty: 25},   // Bottom
+            {x: 40, y: 87, tx: -15, ty: 20},
+            {x: 29, y: 77, tx: -20, ty: 20},
+            {x: 19, y: 65, tx: -20, ty: 15},
+            {x: 10, y: 52, tx: -25, ty: 15},
+            {x: 5, y: 38, tx: -25, ty: 10},
+            {x: 6, y: 25, tx: -25, ty: 5},
+            {x: 15, y: 14, tx: -25, ty: -5},
+            {x: 28, y: 10, tx: -20, ty: -15},
+            {x: 40, y: 15, tx: -10, ty: -20},
+        ];
+
+        const padding = 60;
+        const drawWidth = dotSize - padding * 2;
+        const drawHeight = dotSize - padding * 2;
+
+        const gamePoints = heartPath.map((p, i) => ({
+            x: padding + (p.x / 100) * drawWidth,
+            y: padding + (p.y / 100) * drawHeight,
+            tx: p.tx, ty: p.ty, num: i + 1
+        }));
+        gamePoints.push({ ...gamePoints[0], isLast: true });
+
+        let targetDotIndex = 0;
+        let animationFrameId;
+        let musicStarted = false; // Audio trigger flag
+
+        function drawDotGame() {
+            dotCtx.clearRect(0, 0, dotSize, dotSize);
+
+            dotCtx.beginPath();
+            dotCtx.lineWidth = 6;
+            dotCtx.lineCap = 'round';
+            dotCtx.lineJoin = 'round';
+            dotCtx.strokeStyle = '#ff3366';
+            
+            if (targetDotIndex > 0) {
+                dotCtx.moveTo(gamePoints[0].x, gamePoints[0].y);
+                for (let i = 1; i <= targetDotIndex; i++) {
+                    dotCtx.lineTo(gamePoints[i].x, gamePoints[i].y);
+                }
+                dotCtx.stroke();
+            }
+
+            const time = Date.now() / 150;
+            const pulseGlow = Math.abs(Math.sin(time)) * 15 + 10;
+            const pulseRadius = Math.abs(Math.sin(time)) * 3 + 8;
+
+            gamePoints.forEach((p, i) => {
+                if (p.isLast && i !== targetDotIndex) return;
+
+                dotCtx.beginPath();
+                
+                if (i === targetDotIndex) {
+                    dotCtx.arc(p.x, p.y, pulseRadius, 0, Math.PI * 2);
+                    dotCtx.fillStyle = '#ffffff';
+                    dotCtx.shadowColor = '#ff3366';
+                    dotCtx.shadowBlur = pulseGlow;
+                } else if (i < targetDotIndex) {
+                    dotCtx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+                    dotCtx.fillStyle = '#ff3366';
+                    dotCtx.shadowBlur = 0;
+                } else {
+                    dotCtx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                    dotCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                    dotCtx.shadowBlur = 0;
+                }
+                
+                dotCtx.fill();
+                dotCtx.shadowBlur = 0;
+
+                if (i >= targetDotIndex && !p.isLast) {
+                    dotCtx.font = '600 16px Poppins';
+                    dotCtx.fillStyle = (i === targetDotIndex) ? '#ffffff' : 'rgba(255, 255, 255, 0.4)';
+                    dotCtx.fillText(p.num, p.x + p.tx - 4, p.y + p.ty + 5);
+                }
+            });
+
+            if (targetDotIndex < gamePoints.length) {
+                animationFrameId = requestAnimationFrame(drawDotGame);
+            }
+        }
+
+        function getDotPointerPos(e) {
+            const rect = dotCanvas.getBoundingClientRect();
+            let clientX, clientY;
+            if (e.type.includes('touch')) {
+                clientX = e.touches[0] ? e.touches[0].clientX : e.changedTouches[0].clientX;
+                clientY = e.touches[0] ? e.touches[0].clientY : e.changedTouches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            
+            const scaleX = dotCanvas.width / rect.width;
+            const scaleY = dotCanvas.height / rect.height;
+            
+            return { 
+                x: (clientX - rect.left) * scaleX, 
+                y: (clientY - rect.top) * scaleY 
+            };
+        }
+
+        function handleDotClick(e) {
+            if (targetDotIndex >= gamePoints.length) return;
+            if (e.cancelable && e.type !== 'click') e.preventDefault();
+            
+            if (!musicStarted) {
+                document.getElementById('youtube-audio').contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                musicStarted = true;
+            }
+            
+            const pos = getDotPointerPos(e);
+            const targetPoint = gamePoints[targetDotIndex];
+            
+            // Increased the tap radius to 150px because the canvas is now much larger (600px)
+            if (Math.hypot(targetPoint.x - pos.x, targetPoint.y - pos.y) < 150) { 
+                targetDotIndex++;
+                if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(30); 
+                
+                if (targetDotIndex === gamePoints.length - 1) completeDotGame();
+            }
+        }
+
+        dotCanvas.addEventListener('click', handleDotClick);
+        dotCanvas.addEventListener('touchstart', handleDotClick, {passive: false});
+        drawDotGame();
+
+        function completeDotGame() {
+            cancelAnimationFrame(animationFrameId);
+            
+            dotCtx.clearRect(0, 0, dotSize, dotSize);
+            dotCtx.beginPath();
+            dotCtx.moveTo(gamePoints[0].x, gamePoints[0].y);
+            for(let i=1; i<gamePoints.length; i++) dotCtx.lineTo(gamePoints[i].x, gamePoints[i].y);
+            dotCtx.closePath();
+            
+            dotCtx.lineWidth = 12;
+            dotCtx.strokeStyle = '#ffb6c1';
+            dotCtx.shadowColor = '#ff3366';
+            dotCtx.shadowBlur = 40;
+            dotCtx.stroke();
+            dotCtx.fillStyle = 'rgba(255, 51, 102, 0.4)';
+            dotCtx.fill();
+
+            dotCanvas.classList.add('glow-heart-active');
+            dotTitle.textContent = "Perfect ❤️";
+            dotTitle.classList.remove('tracking-[0.3em]', 'text-sm', 'md:text-lg', 'font-light');
+            dotTitle.classList.add('text-4xl', 'md:text-6xl', 'font-bold', 'serif', 'text-pink-400');
+
+            setTimeout(() => {
+                dotSection.classList.add('fade-out');
+                setTimeout(() => {
+                    dotSection.classList.add('hidden');
+                    const welcomeScreen = document.getElementById('welcome-screen');
+                    welcomeScreen.classList.remove('hidden');
+                    void welcomeScreen.offsetWidth;
+                    welcomeScreen.classList.remove('fade-out');
+                }, 1000);
+            }, 2500);
+        }
+
+        // =====================================================================
+        // --- SLIDESHOW LOGIC ---
+        // =====================================================================
+        let slideIndex = 0;
         let isPlaying = true;
         let slideInterval;
         const SLIDE_DURATION = 4500; 
@@ -442,16 +578,13 @@
             dotsContainer.innerHTML = '';
 
             memories.forEach((memory, index) => {
-                // Create Image
                 const img = document.createElement('img');
                 img.src = memory.image;
-                img.classList.add('slide-image');
-                img.classList.add('w-full', 'rounded-lg');
+                img.classList.add('slide-image', 'w-full', 'rounded-lg');
                 img.alt = `Memory ${index + 1}`;
                 if(index === 0) img.classList.add('active');
                 imageContainer.appendChild(img);
 
-                // Create Dot
                 const dot = document.createElement('button');
                 dot.classList.add('w-2', 'h-2', 'md:w-3', 'md:h-3', 'rounded-full', 'transition-all', 'duration-300', 'm-1');
                 dot.classList.add(index === 0 ? 'bg-pink-400' : 'bg-pink-900', index === 0 ? 'scale-125' : 'scale-100');
@@ -459,92 +592,51 @@
                 dotsContainer.appendChild(dot);
             });
 
-            if(memories.length > 0) {
-                captionText.innerHTML = memories[0].caption;
-            }
+            if(memories.length > 0) captionText.innerHTML = memories[0].caption;
         }
 
-        // Screen Transitions
         function startJourney() {
             initGallery();
-            
-            welcomeScreen.classList.add('fade-exit-active');
-            
+            welcomeScreen.classList.add('fade-out');
             setTimeout(() => {
                 welcomeScreen.classList.add('hidden');
-                welcomeScreen.classList.remove('fade-exit-active');
-                
                 slideshowSection.classList.remove('hidden');
                 void slideshowSection.offsetWidth;
-                slideshowSection.classList.remove('opacity-0');
-                
+                slideshowSection.classList.remove('fade-out');
                 updateUI();
                 startSlideshow();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 800);
-        }
-
-        function goBackToStart() {
-            stopSlideshow();
-            slideshowSection.classList.add('opacity-0');
-            
-            setTimeout(() => {
-                slideshowSection.classList.add('hidden');
-                welcomeScreen.classList.remove('hidden');
-                void welcomeScreen.offsetWidth;
-                
-                currentIndex = 0;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 800);
+            }, 1000);
         }
 
         function goToOutro() {
             stopSlideshow();
-            slideshowSection.classList.add('opacity-0');
-            
+            slideshowSection.classList.add('fade-out');
             setTimeout(() => {
                 slideshowSection.classList.add('hidden');
                 outroSection.classList.remove('hidden');
                 void outroSection.offsetWidth;
-                outroSection.classList.remove('opacity-0');
-                
+                outroSection.classList.remove('fade-out');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 800);
+            }, 1000);
         }
 
-        function restartFromOutro() {
-            outroSection.classList.add('opacity-0');
-            
-            setTimeout(() => {
-                outroSection.classList.add('hidden');
-                welcomeScreen.classList.remove('hidden');
-                void welcomeScreen.offsetWidth;
-                
-                currentIndex = 0;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 800);
-        }
-
-        // Slideshow Controls
         function updateUI() {
-            const imgElements = imageContainer.querySelectorAll('.slide-image');
-            imgElements.forEach((img, index) => {
-                if (index === currentIndex) {
-                    img.classList.add('active');
-                } else {
-                    img.classList.remove('active');
-                }
+            const imgs = imageContainer.querySelectorAll('.slide-image');
+            imgs.forEach((img, idx) => {
+                if (idx === slideIndex) img.classList.add('active');
+                else img.classList.remove('active');
             });
 
             captionText.style.opacity = 0;
             setTimeout(() => {
-                captionText.innerHTML = memories[currentIndex].caption;
+                captionText.innerHTML = memories[slideIndex].caption;
                 captionText.style.opacity = 1;
             }, 300);
 
             const dots = dotsContainer.querySelectorAll('button');
-            dots.forEach((dot, index) => {
-                if (index === currentIndex) {
+            dots.forEach((dot, idx) => {
+                if (idx === slideIndex) {
                     dot.classList.remove('bg-pink-900');
                     dot.classList.add('bg-pink-400', 'scale-125');
                 } else {
@@ -552,49 +644,19 @@
                     dot.classList.add('bg-pink-900');
                 }
             });
-
-            slideCounter.textContent = `Memory ${currentIndex + 1} of ${memories.length}`;
+            slideCounter.textContent = `Memory ${slideIndex + 1} of ${memories.length}`;
         }
 
-        function nextSlide() {
-            currentIndex = (currentIndex + 1) % memories.length;
-            updateUI();
-            resetInterval();
-        }
-
-        function prevSlide() {
-            currentIndex = (currentIndex - 1 + memories.length) % memories.length;
-            updateUI();
-            resetInterval();
-        }
-
-        function goToSlide(index) {
-            currentIndex = index;
-            updateUI();
-            resetInterval();
-        }
-
-        function startSlideshow() {
-            if (memories.length > 1 && isPlaying) {
-                slideInterval = setInterval(nextSlide, SLIDE_DURATION);
-            }
-        }
-
-        function stopSlideshow() {
-            clearInterval(slideInterval);
-        }
-
-        function resetInterval() {
-            if (isPlaying) {
-                stopSlideshow();
-                startSlideshow();
-            }
-        }
+        function nextSlide() { slideIndex = (slideIndex + 1) % memories.length; updateUI(); resetInterval(); }
+        function prevSlide() { slideIndex = (slideIndex - 1 + memories.length) % memories.length; updateUI(); resetInterval(); }
+        function goToSlide(idx) { slideIndex = idx; updateUI(); resetInterval(); }
+        function startSlideshow() { if (memories.length > 1 && isPlaying) slideInterval = setInterval(nextSlide, SLIDE_DURATION); }
+        function stopSlideshow() { clearInterval(slideInterval); }
+        function resetInterval() { if (isPlaying) { stopSlideshow(); startSlideshow(); } }
 
         function togglePlay() {
             isPlaying = !isPlaying;
             const icon = document.getElementById('play-icon');
-            
             if (isPlaying) {
                 icon.setAttribute('data-lucide', 'pause');
                 startSlideshow();
