@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary, Richu ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a0005 0%, #4a0414 50%, #2b010b 100%);
+            color: #ffe6eb;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Floating Hearts Animation */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -100px;
+            width: 20px;
+            height: 20px;
+            background-color: #ff3366;
+            transform: rotate(-45deg);
+            animation: floatup 10s infinite linear;
+            opacity: 0.3;
+            filter: drop-shadow(0 0 10px rgba(255, 51, 102, 0.5));
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff3366;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 10px;
+        }
+
+        @keyframes floatup {
+            0% {
+                transform: rotate(-45deg) translateY(0) scale(0.5);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.6;
+            }
+            80% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: rotate(-45deg) translateY(-1000px) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism Elements */
+        .glass-box {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .verse-box {
+            background: linear-gradient(to right, rgba(255, 51, 102, 0.05), rgba(255, 51, 102, 0.15), rgba(255, 51, 102, 0.05));
+            border-left: 3px solid #ff3366;
+            border-right: 3px solid #ff3366;
+        }
+
+        /* Slideshow Styling */
+        .slide-image {
+            max-height: 55vh;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: none;
+            filter: drop-shadow(0 10px 25px rgba(0,0,0,0.5));
+        }
+
+        .slide-image.active {
+            opacity: 1;
+            display: block;
+        }
+
+        .photo-frame {
+            position: relative;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem 1rem 0 0;
+            border: 1px solid rgba(255, 182, 193, 0.2);
+            border-bottom: none;
+            box-shadow: 0 -10px 30px rgba(255, 51, 102, 0.05);
+        }
+
+        .caption-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 182, 193, 0.2);
+            border-top: none;
+            border-radius: 0 0 1rem 1rem;
+            box-shadow: 0 10px 30px rgba(255, 51, 102, 0.05);
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #ff3366, #ff6b8b);
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 51, 102, 0.4);
+        }
+
+        .outro-btn {
+            background: linear-gradient(45deg, #d4af37, #f3e5ab);
+            color: #4a0414;
+            transition: all 0.3s ease;
+        }
+        .outro-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .slide-nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        .slide-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* Fade transitions */
+        .fade-enter { opacity: 0; transform: scale(0.95); }
+        .fade-enter-active { opacity: 1; transform: scale(1); transition: opacity 800ms, transform 800ms; }
+        .fade-exit { opacity: 1; transform: scale(1); }
+        .fade-exit-active { opacity: 0; transform: scale(0.95); transition: opacity 800ms, transform 800ms; }
+    </style>
+</head>
+<body class="relative flex flex-col items-center justify-center">
+
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="hearts-container"></div>
+
+    <!-- Main Content Container -->
+    <div class="relative z-10 w-full max-w-5xl px-4 py-12 md:py-16 mx-auto text-center flex flex-col items-center justify-center min-h-screen">
+        
+        <!-- ========================================== -->
+        <!-- 1. WELCOME SCREEN                          -->
+        <!-- ========================================== -->
+        <div id="welcome-screen" class="transition-all duration-1000 ease-in-out flex flex-col items-center w-full">
+            <h2 class="text-pink-300 tracking-[0.3em] uppercase text-xs md:text-sm font-semibold mb-4">June 14th — The day you said yes</h2>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-pink-200 via-white to-pink-200 serif" style="line-height: 1.2;">
+                Happy Anniversary,<br> <span class="italic text-pink-400">Richu</span>
+            </h1>
+            
+            <div class="w-24 h-1 bg-pink-500/50 mx-auto rounded-full mb-8"></div>
+            
+            <div class="glass-box p-6 md:p-12 rounded-3xl max-w-4xl w-full mb-10 text-left md:text-center">
+                
+                <!-- The Heartfelt Message -->
+                <div class="space-y-6 text-[16px] md:text-lg text-pink-100/90 font-light leading-relaxed mb-10">
+                    <p>
+                        My dearest Richu,<br><br>
+                        Looking back at our journey since June 14th, my heart is filled with so many emotions. We have shared so many beautiful laughs, unforgettable memories, and moments I will cherish for the rest of my life.
+                    </p>
+                    <p>
+                        I know our path hasn't always been easy. I know we've had our fair share of problems, and sometimes we fight. But I want to assure you, from the very bottom of my heart, that no matter how much we argue or how tough things get—<strong class="text-pink-300 font-medium">we are together, and we are going to stay together.</strong> Every argument is just a bump in the road, and I promise you, we will work on us. We will learn, we will grow, and we will build a relationship that can withstand any storm.
+                    </p>
+                    <p>
+                        You are my present, and you are my future. I am never letting you go. I promise to keep fighting <em>for</em> us, to protect what we have, and to love you through it all. One day, <strong class="text-pink-300 font-medium">I am going to marry you</strong>, Richu. I cannot wait for the day I finally get to call you my wife.
+                    </p>
+                </div>
+                
+                <!-- Bible Verses -->
+                <div class="verse-box p-6 md:p-8 rounded-xl my-10 md:mx-8">
+                    <i data-lucide="quote" class="w-8 h-8 mx-auto text-pink-400/50 mb-4"></i>
+                    <p class="italic text-pink-200/90 serif text-lg md:text-xl mb-4">
+                        "Love is patient and kind... It bears all things, believes all things, hopes all things, endures all things."
+                    </p>
+                    <p class="text-xs md:text-sm text-pink-400 font-medium tracking-wide uppercase">— 1 Corinthians 13:4, 7</p>
+                    
+                    <div class="w-16 h-[1px] bg-pink-500/30 mx-auto my-6"></div>
+                    
+                    <p class="italic text-pink-200/90 serif text-lg md:text-xl mb-4">
+                        "But besides all these things, clothe yourselves with love, for it is a perfect bond of union."
+                    </p>
+                    <p class="text-xs md:text-sm text-pink-400 font-medium tracking-wide uppercase">— Colossians 3:14</p>
+                </div>
+
+                <div class="text-center mt-8">
+                    <button onclick="startJourney()" class="cursor-pointer inline-flex items-center justify-center px-10 py-4 rounded-full action-btn text-white font-medium shadow-lg text-lg">
+                        <i data-lucide="images" class="w-6 h-6 mr-3 fill-white/20"></i>
+                        Open Our Memories
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 2. SLIDESHOW SECTION                       -->
+        <!-- ========================================== -->
+        <div id="slideshow-section" class="w-full hidden opacity-0 transition-opacity duration-1000 ease-in-out flex flex-col items-center">
+            
+            <div class="w-full max-w-4xl flex flex-col relative group mt-4">
+                
+                <!-- Images Container -->
+                <div class="photo-frame w-full flex items-center justify-center overflow-hidden min-h-[40vh] md:min-h-[55vh]">
+                    <div id="image-container" class="w-full flex justify-center items-center relative">
+                        <!-- Images will be injected here via JS -->
+                    </div>
+                </div>
+
+                <!-- Caption Container -->
+                <div class="caption-box w-full p-6 md:p-8 text-center min-h-[120px] flex items-center justify-center">
+                    <p id="caption-text" class="text-lg md:text-xl text-pink-100 serif italic transition-all duration-500 leading-relaxed">
+                        <!-- Caption injects here -->
+                    </p>
+                </div>
+
+                <!-- Desktop Navigation Buttons -->
+                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 slide-nav-btn p-3 rounded-full text-white focus:outline-none hidden md:block opacity-0 group-hover:opacity-100">
+                    <i data-lucide="chevron-left" class="w-8 h-8"></i>
+                </button>
+                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 slide-nav-btn p-3 rounded-full text-white focus:outline-none hidden md:block opacity-0 group-hover:opacity-100">
+                    <i data-lucide="chevron-right" class="w-8 h-8"></i>
+                </button>
+            </div>
+
+            <!-- Slideshow Controls & Progress -->
+            <div class="mt-8 flex flex-col items-center w-full max-w-2xl">
+                <div class="flex items-center space-x-8 mb-4">
+                    <button onclick="prevSlide()" class="md:hidden slide-nav-btn p-4 rounded-full text-white focus:outline-none">
+                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                    </button>
+                    
+                    <button id="play-pause-btn" onclick="togglePlay()" class="slide-nav-btn p-5 rounded-full text-pink-300 focus:outline-none shadow-[0_0_15px_rgba(255,51,102,0.3)]">
+                        <i data-lucide="pause" id="play-icon" class="w-8 h-8 md:w-10 md:h-10"></i>
+                    </button>
+
+                    <button onclick="nextSlide()" class="md:hidden slide-nav-btn p-4 rounded-full text-white focus:outline-none">
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <p id="slide-counter" class="text-sm text-pink-200/60 font-medium tracking-widest uppercase mb-4">Memory 1</p>
+                
+                <!-- Dots indicator -->
+                <div id="dots-container" class="flex flex-wrap justify-center gap-2 mt-2 w-full px-4"></div>
+            </div>
+
+            <!-- Transition to Outro Button -->
+            <div class="mt-12 flex flex-col items-center gap-4 mb-10 w-full">
+                <button onclick="goToOutro()" class="cursor-pointer inline-flex items-center justify-center px-8 py-4 rounded-full outro-btn font-bold shadow-[0_0_20px_rgba(212,175,55,0.3)] text-lg w-full max-w-xs md:max-w-md">
+                    <i data-lucide="mail-open" class="w-5 h-5 mr-3"></i>
+                    Read My Final Promise 💌
+                </button>
+                
+                <button onclick="goBackToStart()" class="text-sm text-pink-400/60 hover:text-pink-300 transition-colors flex items-center mt-2">
+                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Go back to the beginning
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 3. OUTRO SCREEN (THE FINAL PROMISE)        -->
+        <!-- ========================================== -->
+        <div id="outro-section" class="w-full hidden opacity-0 transition-opacity duration-1000 ease-in-out flex flex-col items-center">
+            
+            <i data-lucide="gem" class="w-16 h-16 text-yellow-400/80 mb-6 drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]"></i>
+            
+            <h2 class="text-4xl md:text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 via-white to-yellow-200 serif">
+                My Promise To You
+            </h2>
+
+            <div class="glass-box p-6 md:p-12 rounded-3xl max-w-4xl w-full text-left md:text-center relative overflow-hidden">
+                
+                <!-- Subtle background decoration -->
+                <div class="absolute top-0 right-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
+                    <i data-lucide="heart" class="w-64 h-64 fill-white"></i>
+                </div>
+
+                <div class="space-y-6 text-[16px] md:text-lg text-pink-100/90 font-light leading-relaxed relative z-10">
+                    <p>
+                        You made it to the end of these photos, but Richu, <strong class="text-white font-medium">this is barely the first chapter of our story.</strong>
+                    </p>
+                    <p>
+                        Looking at all these moments reminds me of exactly why I fell in love with you, and why I continue to fall in love with you more and more every single day. I know I'm not perfect. I know we both have our flaws, our bad days, and our misunderstandings. Sometimes we clash, and sometimes things feel incredibly hard.
+                    </p>
+                    <p>
+                        But I want you to look at me and know this one absolute truth: <strong class="text-pink-300 font-medium text-xl serif">I am never giving up on us.</strong>
+                    </p>
+                    <p>
+                        You are the woman I prayed for. The one Jehovah placed in my life. I promise to be your safe space. I promise to communicate better, to love you louder, and to be the man you truly deserve. I promise that when things get tough, I won't walk away—I will hold you tighter and we will figure it out together.
+                    </p>
+                    <p>
+                        Above all, I promise you that this journey leads to forever. One day, I am going to put a ring on your finger. We are going to build a beautiful life, a beautiful family, and a beautiful home together under Jehovah’s care.
+                    </p>
+                    <p class="pt-6 text-xl md:text-2xl serif italic text-pink-200">
+                        Thank you for saying yes on June 14th.<br>
+                        Thank you for being my Richu.<br>
+                        Happy Anniversary, my soon-to-be wife. I love you endlessly.
+                    </p>
+                </div>
+                
+                <div class="mt-12 text-center">
+                    <button onclick="restartFromOutro()" class="text-sm text-pink-400/60 hover:text-pink-300 transition-colors inline-flex items-center">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4 mr-2"></i> Relive our memories again
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // =====================================================================
+        // 👇 ADD ALL YOUR PHOTOS AND CAPTIONS DOWN HERE 👇
+        // =====================================================================
+        
+        const memories = [
+            { 
+                image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800', // <-- Change to your file name, e.g., '1.jpg'
+                caption: 'June 14th — The most beautiful day of my life. The day you became mine.' 
+            },
+            { 
+                image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=800', // <-- Change to your file name, e.g., '2.jpg'
+                caption: 'I know we fight sometimes, but I will never stop fighting for us.' 
+            },
+            { 
+                image: 'https://images.unsplash.com/photo-1494774157365-9e04c6720e47?q=80&w=800', // <-- Change to your file name, e.g., '3.jpg'
+                caption: 'We will work on everything together. Hand in hand.' 
+            },
+            { 
+                image: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=800', // <-- Change to your file name, e.g., '4.jpg'
+                caption: 'Your smile is the only thing I need to make my day perfect.' 
+            },
+            { 
+                image: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800', // <-- Change to your file name, e.g., '5.jpg'
+                caption: 'Through all the ups and downs, you are my perfect bond of union.' 
+            },
+            { 
+                image: 'https://images.unsplash.com/photo-1501901609772-df0848060b33?q=80&w=800', // <-- Change to your file name, e.g., '6.jpg'
+                caption: 'Every memory with you is a treasure I hold close to my heart.' 
+            },
+            { 
+                image: 'https://images.unsplash.com/photo-1474552226712-ac0f0961a954?q=80&w=800', // <-- Change to your file name, e.g., '7.jpg'
+                caption: 'I promise to always listen, to understand, and to grow with you.' 
+            },
+            { 
+                image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=800', // <-- Change to your file name, e.g., '8.jpg'
+                caption: 'No matter the distance or the problem, you are my home.' 
+            },
+            { 
+                image: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800', // <-- Change to your file name, e.g., '9.jpg'
+                caption: 'I cannot wait for the day I finally get to marry you.' 
+            },
+            { 
+                image: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?q=80&w=800', // <-- Change to your file name, e.g., '10.jpg'
+                caption: 'Happy Anniversary, my future wife. I love you endlessly!' 
+            }
+            // Copy and paste more below! Example:
+            // { image: '11.jpg', caption: 'My 11th caption!' },
+        ];
+        
+        // =====================================================================
+        // 👆 END OF YOUR PHOTOS 👆
+        // =====================================================================
+
+        // Generate Floating Hearts
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartCount = 25;
+
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                
+                const leftPos = Math.random() * 100;
+                const animDuration = 8 + Math.random() * 12;
+                const animDelay = Math.random() * 10;
+                const scale = 0.4 + Math.random() * 0.6;
+
+                heart.style.left = `${leftPos}%`;
+                heart.style.animationDuration = `${animDuration}s`;
+                heart.style.animationDelay = `${animDelay}s`;
+                heart.style.transform = `scale(${scale}) rotate(-45deg)`;
+
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        // Slideshow & Navigation Logic
+        let currentIndex = 0;
+        let isPlaying = true;
+        let slideInterval;
+        const SLIDE_DURATION = 4500; 
+
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const slideshowSection = document.getElementById('slideshow-section');
+        const outroSection = document.getElementById('outro-section');
+        const imageContainer = document.getElementById('image-container');
+        const captionText = document.getElementById('caption-text');
+        const dotsContainer = document.getElementById('dots-container');
+        const slideCounter = document.getElementById('slide-counter');
+
+        function initGallery() {
+            imageContainer.innerHTML = '';
+            dotsContainer.innerHTML = '';
+
+            memories.forEach((memory, index) => {
+                // Create Image
+                const img = document.createElement('img');
+                img.src = memory.image;
+                img.classList.add('slide-image');
+                img.classList.add('w-full', 'rounded-lg');
+                img.alt = `Memory ${index + 1}`;
+                if(index === 0) img.classList.add('active');
+                imageContainer.appendChild(img);
+
+                // Create Dot
+                const dot = document.createElement('button');
+                dot.classList.add('w-2', 'h-2', 'md:w-3', 'md:h-3', 'rounded-full', 'transition-all', 'duration-300', 'm-1');
+                dot.classList.add(index === 0 ? 'bg-pink-400' : 'bg-pink-900', index === 0 ? 'scale-125' : 'scale-100');
+                dot.onclick = () => goToSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+
+            if(memories.length > 0) {
+                captionText.innerHTML = memories[0].caption;
+            }
+        }
+
+        // Screen Transitions
+        function startJourney() {
+            initGallery();
+            
+            welcomeScreen.classList.add('fade-exit-active');
+            
+            setTimeout(() => {
+                welcomeScreen.classList.add('hidden');
+                welcomeScreen.classList.remove('fade-exit-active');
+                
+                slideshowSection.classList.remove('hidden');
+                void slideshowSection.offsetWidth;
+                slideshowSection.classList.remove('opacity-0');
+                
+                updateUI();
+                startSlideshow();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 800);
+        }
+
+        function goBackToStart() {
+            stopSlideshow();
+            slideshowSection.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                slideshowSection.classList.add('hidden');
+                welcomeScreen.classList.remove('hidden');
+                void welcomeScreen.offsetWidth;
+                
+                currentIndex = 0;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 800);
+        }
+
+        function goToOutro() {
+            stopSlideshow();
+            slideshowSection.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                slideshowSection.classList.add('hidden');
+                outroSection.classList.remove('hidden');
+                void outroSection.offsetWidth;
+                outroSection.classList.remove('opacity-0');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 800);
+        }
+
+        function restartFromOutro() {
+            outroSection.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                outroSection.classList.add('hidden');
+                welcomeScreen.classList.remove('hidden');
+                void welcomeScreen.offsetWidth;
+                
+                currentIndex = 0;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 800);
+        }
+
+        // Slideshow Controls
+        function updateUI() {
+            const imgElements = imageContainer.querySelectorAll('.slide-image');
+            imgElements.forEach((img, index) => {
+                if (index === currentIndex) {
+                    img.classList.add('active');
+                } else {
+                    img.classList.remove('active');
+                }
+            });
+
+            captionText.style.opacity = 0;
+            setTimeout(() => {
+                captionText.innerHTML = memories[currentIndex].caption;
+                captionText.style.opacity = 1;
+            }, 300);
+
+            const dots = dotsContainer.querySelectorAll('button');
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.remove('bg-pink-900');
+                    dot.classList.add('bg-pink-400', 'scale-125');
+                } else {
+                    dot.classList.remove('bg-pink-400', 'scale-125');
+                    dot.classList.add('bg-pink-900');
+                }
+            });
+
+            slideCounter.textContent = `Memory ${currentIndex + 1} of ${memories.length}`;
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % memories.length;
+            updateUI();
+            resetInterval();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + memories.length) % memories.length;
+            updateUI();
+            resetInterval();
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateUI();
+            resetInterval();
+        }
+
+        function startSlideshow() {
+            if (memories.length > 1 && isPlaying) {
+                slideInterval = setInterval(nextSlide, SLIDE_DURATION);
+            }
+        }
+
+        function stopSlideshow() {
+            clearInterval(slideInterval);
+        }
+
+        function resetInterval() {
+            if (isPlaying) {
+                stopSlideshow();
+                startSlideshow();
+            }
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const icon = document.getElementById('play-icon');
+            
+            if (isPlaying) {
+                icon.setAttribute('data-lucide', 'pause');
+                startSlideshow();
+            } else {
+                icon.setAttribute('data-lucide', 'play');
+                stopSlideshow();
+            }
+            lucide.createIcons();
+        }
+
+    </script>
+</body>
+</html>
