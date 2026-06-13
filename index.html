@@ -8,16 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        html, body {
+            background-color: #1a0005; /* Forces dark red immediately to prevent white flash */
+        }
+        
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1a0005 0%, #4a0414 50%, #2b010b 100%);
             color: #ffe6eb;
             min-height: 100vh;
             overflow-x: hidden;
-        }
-
-        h1, h2, h3, .serif {
-            font-family: 'Playfair Display', serif;
         }
 
         /* Floating Hearts Background */
@@ -170,7 +170,7 @@
         }
     </style>
 </head>
-<body class="relative flex flex-col items-center justify-center">
+<body class="relative flex flex-col items-center justify-center bg-[#1a0005]">
 
     <div style="position: absolute; width: 0; height: 0; overflow: hidden; z-index: -1;">
         <iframe id="youtube-audio" width="10" height="10" 
